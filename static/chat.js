@@ -19,45 +19,26 @@ function handleMessage({ time, username, message }) {
     addMessage(time, username, message);
 }
 
-const login = document.getElementById("login");
 const chatform = document.getElementById("chat");
-login.addEventListener("submit", (e) => {
-    e.preventDefault();
 
-    if (!username) {
-        socket = io();
-        
-        username = document.getElementById("username").value;
-        document.getElementById("user").innerText = username;
-        login.style.display = 'none';
-        chatform.style.display = 'block';
+socket.on("receive message", handleMessage);
+socket.on("update user", userUpdate);
 
-        socket.on("receive message", handleMessage);
-        socket.on("update user", userUpdate);
-
-        socket.emit("handle user", {
-            username,
-            type: "joined",
-            time: Date.now(),
-        });
-    } else {
-        socket.emit("handle user", {
-            username,
-            time: Date.now(),
-        });
-        
-        if (socket) {
-            socket.off();
-        }
-        socket = null;
-        login.style.display = 'block';
-        chatform.style.display = 'none';
-    }
+socket.emit("handle user", {
+    username,
+    type: "joined",
+    time: Date.now(),
 });
 
 chatform.addEventListener("submit", (e) => {
+    if (e.submitter.value === 'logout') {
+        fetch("/logout", {
+            method: "POST"
+        });
+        window.location.href = "/login";
+    }
+    
     e.preventDefault();
-
     if (username) {
         const message = document.getElementById("prompt");
 

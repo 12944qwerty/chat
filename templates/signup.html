@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Signup Chatroom</title>
+    </head>
+    <body>
+        <form id="signup" method="POST">
+            <label>Username:</label>
+            <input id="username" name="username" type="text" placeholder="Enter username" /><br/>
+            <label>Password: </label>
+            <input id="password" name="password" type="password" placeholder="Enter password" /><br/>
+            <label>Repeat: </label>
+            <input id="pwdrepeat" name="pwdrepeat" type="password" placeholder="Repeat password" /><br/>
+            <p style="color:red;display:none" id="error"></p>
+            <input type="submit" id="submit" value="Login" />
+        </form>
+
+        <script type="text/javascript">
+            const signup = document.getElementById("signup");
+            const username = document.getElementById("username");
+            const password = document.getElementById("password");
+            const repeat = document.getElementById("pwdrepeat");
+            const error = document.getElementById("error");
+
+            signup.addEventListener("submit", (e) => {
+                error.style.display = 'block';
+                if (!username.value) {
+                    error.innerHTML = "Please specify a username";
+                    e.preventDefault();
+                } else if (!password.value) {
+                    error.innerHTML = "Please specify a password";
+                    e.preventDefault();
+                } else if (!repeat.value) {
+                    error.innerHTML = "Please repeat password";
+                    e.preventDefault();
+                } else if (password.value !== repeat.value) {
+                    error.innerHTML = "Passwords do not match";
+                    e.preventDefault();
+                }
+            })
+        </script>
+    </body>
+</html>
