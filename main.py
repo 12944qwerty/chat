@@ -6,14 +6,15 @@ from flask_sqlalchemy import SQLAlchemy
 import sqlite3
 from argon2 import PasswordHasher
 import argon2
-import dotenv
+from dotenv import load_dotenv
+load_dotenv()
 
 DEBUG = True
 
 app = Flask(__name__)
 db = SQLAlchemy()
 app.config["SECRET_KEY"] = os.environ.get("SECRET")
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///chat.db"
+app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URI")
 db.init_app(app)
 
 socket = SocketIO(app, sync_mode=None)
