@@ -6,10 +6,11 @@
     <body>
         <form id="login" method="POST">
             <label>Username:</label>
-            <input id="username" name="username" type="text" placeholder="Enter username" /><br/>
+            <input id="username" name="username" type="text" autocomplete="username" placeholder="Enter username" /><br/>
             <label>Password: </label>
-            <input id="password" name="password" type="password" placeholder="Enter password" /><br/>
-            <input type="submit" value="Login" />
+            <input id="password" name="password" type="password" autocomplete="current-password" placeholder="Enter password" /><br/>
+            <input type="submit" value="Login" />&nbsp;
+            <a href="/signup">Signup instead</a><br/>
             {% if error %}
               <p style="color:red;" id="error">{{ error }}</p>
             {% endif %}

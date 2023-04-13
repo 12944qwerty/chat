@@ -6,13 +6,16 @@
     <body>
         <form id="signup" method="POST">
             <label>Username:</label>
-            <input id="username" name="username" type="text" placeholder="Enter username" /><br/>
+            <input id="username" name="username" type="text" autocomplete="username" placeholder="Enter username" /><br/>
             <label>Password: </label>
-            <input id="password" name="password" type="password" placeholder="Enter password" /><br/>
+            <input id="password" name="password" type="password" autocomplete="new-password" placeholder="Enter password" /><br/>
             <label>Repeat: </label>
             <input id="pwdrepeat" name="pwdrepeat" type="password" placeholder="Repeat password" /><br/>
-            <p style="color:red;display:none" id="error"></p>
-            <input type="submit" id="submit" value="Login" />
+            <input type="submit" id="submit" value="Signup" />&nbsp;
+            <a href="/login">Login instead</a><br/>
+            {% if error %}
+              <label style="color:red;" id="error">{{ error }}</label><br/>
+            {% endif %}
         </form>
 
         <script type="text/javascript">
@@ -20,10 +23,15 @@
             const username = document.getElementById("username");
             const password = document.getElementById("password");
             const repeat = document.getElementById("pwdrepeat");
-            const error = document.getElementById("error");
+            let error = document.getElementById("error");
 
             signup.addEventListener("submit", (e) => {
-                error.style.display = 'block';
+                if (!error) {
+                    error = document.createElement("label");
+                    error.id = "error";
+                    error.style.color = "red";
+                    signup.appendChild(error);
+                }
                 if (!username.value) {
                     error.innerHTML = "Please specify a username";
                     e.preventDefault();
