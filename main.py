@@ -3,6 +3,7 @@ import time
 from flask import Flask, request, render_template, redirect, session
 from flask_socketio import SocketIO
 from flask_sqlalchemy import SQLAlchemy
+import sqlite3
 from argon2 import PasswordHasher
 import argon2
 import dotenv
@@ -83,12 +84,11 @@ def signUpPage():
             return render_template("signup.html", error="Passwords do not match")
 
         try:
-            print(password, hasher.hash(password))
             db.session.add(User(username=username, password=hasher.hash(password)))
             db.session.commit()
 
             return redirect("/login")
-        except:
+        except sqlite3.IntegrityError: # username already exists, fail UNIQUE requirement
             return render_template("signup.html", error="Username already in use")
     else:
         return render_template("signup.html")
