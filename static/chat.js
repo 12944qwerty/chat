@@ -1,12 +1,13 @@
-const chatBox = document.getElementById("chatbox").children[0];
+const chatBox = document.getElementById("chatbox");
 function addMessage(time, user, message) {
-    const messageBox = document.createElement("li");
+    const messageBox = document.createElement("div");
     chatBox.appendChild(messageBox);
 
     if (user) {
         messageBox.innerHTML = `${user}: ${message}`;
     } else {
         messageBox.innerHTML = message;
+        messageBox.dataset.info = true;
     }
 
 }

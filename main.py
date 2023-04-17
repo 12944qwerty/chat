@@ -10,11 +10,14 @@ from dotenv import load_dotenv
 load_dotenv()
 
 DEBUG = True
+SECRET = os.environ.get("SECRET")
+DATABASE_URI = os.environ.get("DATABASE_URI")
+JOIN_LEAVE = bool(os.environ.get("JOIN_LEAVE"))
 
 app = Flask(__name__)
 db = SQLAlchemy()
-app.config["SECRET_KEY"] = os.environ.get("SECRET")
-app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URI")
+app.config["SECRET_KEY"] = SECRET
+app.config["SQLALCHEMY_DATABASE_URI"] = DATABASE_URI
 db.init_app(app)
 
 socket = SocketIO(app, sync_mode=None)
@@ -79,6 +82,8 @@ def signUpPage():
             return render_template("signup.html", error="Username is required")
         elif not password:
             return render_template("signup.html", error="Password is required")
+        elif len(password) < 7:
+            return render_template("signup.html", error="Passwords should be more than 6 characters")
         elif not pwdrepeat:
             return render_template("signup.html", error="Repeat password is required")
         elif password != pwdrepeat:
@@ -104,17 +109,19 @@ def logoutPage():
 
 @socket.on("disconnect")
 def disconnect():
-    socket.emit("update user", {
-        "username": active[request.sid],
-        "type": "left",
-        "time": int(time.time() * 1000)
-    })
+    if JOIN_LEAVE:
+        socket.emit("update user", {
+            "username": active[request.sid],
+            "type": "left",
+            "time": int(time.time() * 1000)
+        })
     del active[request.sid]
 
 @socket.on("handle user")
 def new_user(payload):
     active[request.sid] = payload["username"]
-    socket.emit("update user", payload)
+    if JOIN_LEAVE:
+        socket.emit("update user", payload)
 
 @socket.on("send message")
 def new_message(payload):

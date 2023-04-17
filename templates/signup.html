@@ -41,6 +41,9 @@
                 } else if (!repeat.value) {
                     error.innerHTML = "Please repeat password";
                     e.preventDefault();
+                } else if (password.value.length < 7) {
+                    error.innerHTML = "Passwords should be more than 6 characters.";
+                    e.preventDefault();
                 } else if (password.value !== repeat.value) {
                     error.innerHTML = "Passwords do not match";
                     e.preventDefault();
