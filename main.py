@@ -107,22 +107,6 @@ def logoutPage():
     else:
         return """<form method="POST"><label>Are you sure you want to logout?</label><input type="submit" value="Logout"></form>"""
 
-@socket.on("disconnect")
-def disconnect():
-    if JOIN_LEAVE:
-        socket.emit("update user", {
-            "username": active[request.sid],
-            "type": "left",
-            "time": int(time.time() * 1000)
-        })
-    del active[request.sid]
-
-@socket.on("handle user")
-def new_user(payload):
-    active[request.sid] = payload["username"]
-    if JOIN_LEAVE:
-        socket.emit("update user", payload)
-
 @socket.on("send message")
 def new_message(payload):
     socket.emit("receive message", payload)

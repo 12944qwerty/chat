@@ -12,8 +12,8 @@ function addMessage(time, user, message) {
 
 }
 
-function userUpdate({ time, username, type }) {
-    addMessage(time, "", `${username} ${type} the party!`);
+function serverMessage({ time, _, message }) {
+    addMessage(time, "", message);
 }
 
 function handleMessage({ time, username, message }) {
@@ -23,13 +23,7 @@ function handleMessage({ time, username, message }) {
 const chatform = document.getElementById("chat");
 
 socket.on("receive message", handleMessage);
-socket.on("update user", userUpdate);
-
-socket.emit("handle user", {
-    username,
-    type: "joined",
-    time: Date.now(),
-});
+socket.on("server message", serverMessage);
 
 chatform.addEventListener("submit", (e) => {
     if (e.submitter.value === 'logout') {
