@@ -1,6 +1,6 @@
 # Chat
 A FOSS Flask chatroom. It aims to be customizable without the need of modifying code.
-[![Run on Repl.it](https://replit.com/badge/github/12944qwerty/chat)](https://replit.com/new/github/12944qwerty/chat)
+<a target="_blank" href="https://replit.com/github/12944qwerty/chat"><img alt="Run on Replit" src="https://raw.githubusercontent.com/BinBashBanana/deploy-buttons/master/buttons/remade/replit.svg"></a>
 
 ## What can it do?
 At the moment it is very limited. There is no persistence in messages. They get reset every time you reload/join.
